@@ -1,0 +1,62 @@
+﻿@model Hemlock.Models.ProjectsViewModel
+@using PagedList.Mvc;
+
+<table class="table table-responsive">
+    <thead>
+        <tr>
+            <th>
+            </th>
+            <th class="txt-align-left">
+                Category
+            </th>
+            <th class="txt-align-right">
+                Logged Hours
+            </th>
+            <th class="txt-align-right">
+                Average
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model.SelectedProject.SREDCategories.OrderBy(c => c.CategoryName))
+    {
+    <tbody class="sred-category">
+        <tr class="sred-category-row">
+            <th class="expand-row">
+                <span class="glyphicon glyphicon-chevron-right category-icon"></span>
+            </th>
+            <th class="txt-align-left">
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </th>
+            <th class="txt-align-right">
+                @Html.DisplayFor(modelItem => Model.TotalHoursPerCategory[item])
+            </th>
+            <th class="txt-align-right">
+                @Html.DisplayFor(modelItem => Model.TotalPercentageOfContributionPerCategory_String[item])
+            </th>
+            <th class="txt-align-center">
+                <span class="glyphicon glyphicon-pencil btn actionButton btn-edit-category" data-id="@item.SREDCategoryID"></span>
+            </th>
+        </tr>
+        @foreach (var employee in Model.EmployeeHoursWorkedPerCategory[item])
+        {
+            <tr class="sred-category-employees" hidden>
+                <td>
+                </td>
+                <td class="txt-align-left">
+                    @Html.DisplayFor(modelItem => employee.Key.FullName)
+                </td>
+                <td class="txt-align-right">
+                    @Html.DisplayFor(modelItem => employee.Value)
+                </td>
+                <td class="txt-align-right">
+                    @Html.DisplayFor(modelItem => Model.EmployeePercentageContributionPerCategory_String[item][employee.Key])
+                </td>
+                <td>
+                </td>
+            </tr>
+        }
+    </tbody>
+    }
+</table>

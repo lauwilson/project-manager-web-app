@@ -1,0 +1,36 @@
+﻿@font-face {
+    font-family: "League Spartan";
+    src : url('../Fonts/leaguespartan-bold.woff') format('woff'),
+          url('../Fonts/leaguespartan-bold.ttf') format('truetype')
+}
+
+@font-face {
+    font-family: 'Libre Baskerville';
+    src: url('../Fonts/LibreBaskerville-Italic.otf') format('opentype');
+    font-style : italic
+}
+
+h1, p {
+    text-align : center;
+}
+
+h1 {
+    font-family : 'League Spartan', Arial, sans-serif;
+}
+
+p { 
+    font-family : 'Libre Baskerville', 'Times New Roman', serif;
+    font-size : larger;
+}
+
+img {
+    display : block;
+    margin-left : auto;
+    margin-right : auto;
+    width : 80%;
+    max-width : 600px;
+}
+
+#btn-return-to-login, #btn-go-back {
+    margin-top : 15px;
+}

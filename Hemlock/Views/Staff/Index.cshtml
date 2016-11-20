@@ -1,0 +1,184 @@
+﻿@using Hemlock.Handlers
+@model Hemlock.Models.StaffView
+@using PagedList.Mvc
+@using PagedList
+@{
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+    Page.Title = "Staff";
+    Page.Heading = "Staff Overview";
+}
+
+@section ChildViewCSS {
+    <link href="~/Content/Staff.css" rel="stylesheet" type="text/css" />
+}
+
+@section modal{
+<div class="col-md-8" id="daterange-wrapper">
+    @using (Html.BeginForm("Index", "Staff", FormMethod.Post, new { id = "header-form" }))
+    {
+    <label for="daterange-picker" id="daterange-label">Date Range: </label>
+    <div class="input-group input-daterange" id="daterange-picker">
+        <input class="date-picker form-control" id="daterangeStartDate" name="from" value=@Model.fromString />
+        <span class="input-group-addon">to</span>
+        <input class="date-picker form-control" id="daterangeEndDate" name="to" value=@Model.toString />
+    </div>
+    <button type="button" id="submit-daterange-btn" class="btn btn-style" onclick="form.submit()">
+        Set Date Range
+    </button>
+    }
+</div>
+<div class="col-md-4">
+    <button type="button" class="btn btn-style" data-toggle="modal" data-target="#modal-add-entry" id="btn-add-entry">
+        Add User
+    </button> 
+</div>
+@Html.Partial("~/Views/Staff/Add.cshtml")
+}
+
+@section hours {
+    <section class="hours">
+        <div id="hours">
+            <table id="h">
+                <tr id="label">
+                    <td class="hrs">Budget <br />Hours</td>
+                    <td class="hrs">Logged<br /> Hours</td>
+                    <td class="hrs">Remaining<br /> Hours</td>
+                </tr>
+                <tr id="val">
+                    <td class="hrs">@Model.budget</td>
+                    <td class="hrs">@Model.hours</td>
+                    <td class="hrs">@Model.remaining</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+}
+
+<div id="options">
+    @using (Html.BeginForm("View", "Staff", FormMethod.Post))
+    {
+    <button class="btn btn-style" id="view-activity-btn" type="submit" onclick="pick()" name="username">View Activity</button>
+    }   
+    <input class="btn btn-style" id="flag-users-btn" data-toggle="modal" data-target="#modal-notify" type="submit" value="Flag Users"/>
+
+<table class="table table-striped table-responsive">
+    <thead>
+        <tr class="tableRow" id="head">
+            <th></th>
+            <th class="tableHeader" id="tableHeaderName">Name</th>
+            <th class="tableHeader" id="tableHeaderPos">Position</th>
+            <th class="tableHeader">Logged hours</th>
+            <th class="tableHeader">Remaining hours</th>
+            <th class="tableHeader">Time completed</th>
+            <th class="tableHeader">Actions</th>
+        </tr>
+    </thead>
+    @if (Model.list != null)
+    {
+        foreach (var em in Model.list)
+        {
+            <tr class="tableRow">
+                <td>
+                    @Html.RadioButton("view", em.FirstName + em.LastName)
+                </td>
+                @foreach (var item in EmployeeHandler.staffOneRow(em, @Model.from, @Model.to))
+                {
+                    var i = 0;
+                    int num = 0;
+                    bool isNum = int.TryParse(item, out num);
+                    <td>
+                        @if (isNum || item.Contains("%"))
+                        {
+
+                            <p style="text-align:right;">@Html.DisplayFor(modelItem => item)</p>
+                        }
+                        else
+                        {
+                            <p style="text-align:left;">@Html.DisplayFor(modelItem => item)</p>
+                        }
+
+                    </td>
+                    i++;
+                }
+                <td>
+                    <a href='@Url.Action("Edit","Staff", new { EmployeeID = em.EmployeeID })'>
+                        <span class="glyphicon glyphicon-pencil btn actionButton btn-edit-category" id="editStaff"></span>
+                    </a>
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+@using (Html.BeginForm("FlagUser", "Staff", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+<!-- Add Entry Modal -->
+    <div class="modal fade" id="modal-notify" role="dialog">
+        <div class="modal-dialog" id="modal-create-email" role="document">
+<!-- Modal Content -->
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                     </button>
+                     <h3 class="modal-title">Send Email</h3>
+                 </div>
+
+                <div class="modal-body ">
+                    <form class="form-horizontal">
+                    
+                        <div class="form-group modal-element">
+                            <label for="modal-message" class="col-sm-2 modal-label">CC:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="modal-cc" name="cc" value=@Model.email />
+                                </div>
+                        </div>
+
+                        <div class="form-group modal-element">
+                            <label for="modal-subject" class="col-sm-2 modal-label">Subject:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="modal-subject-txt" name="subject" value="Please update your SR&ED entries" />
+                                </div>
+                        </div>
+
+                        <div class="form-group modal-element">
+                            <label for="modal-message" class="col-sm-2 modal-label">Message:</label>
+                                <div class="col-sm-10">
+                                    <textarea type="text" class="form-control" id="modal-message-txt" name="message">Alert!
+
+                                        You are behind in your SR&ED, please update them.
+                                                                            
+                                        Thank you.</textarea>
+                                </div>
+                        </div>
+
+                    </form>
+                </div>
+
+               <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success" onclick="pick()" id="flag" name="username">Send</button>
+               </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+<div class="col-sm-10">
+    <div class="center">
+    @Html.PagedListPager(Model.list, page => Url.Action("Index", new { page, pageSize = Model.list.PageSize, from = @Model.from, to = @Model.to }))
+    Showing @Model.list.FirstItemOnPage to @Model.list.LastItemOnPage of @Model.list.TotalItemCount
+
+    @using (Html.BeginForm("Index", "Staff", FormMethod.Post))
+    {
+        <div id="employee-list-size">
+            <img src="~/Content/Images/people.png" alt="edit" width="18" height="18" />
+            <input class="text" id="pageNum" name="pageSize" value=@Model.pageSize />
+            <label for="pagesize">Per Page </label>
+        </div>
+        <input class="button" id="submit" type="submit" value="OK" />
+    }
+    </div>
+</div>

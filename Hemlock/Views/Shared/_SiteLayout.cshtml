@@ -1,0 +1,92 @@
+﻿@using Hemlock.Models
+@{ 
+    var User = (Employee)Session["User"];
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@Page.Title</title>
+    <link href="~/Content/jasny-bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/StyleSheet.css" rel="stylesheet" type="text/css" />
+    @RenderSection("ChildViewCSS", false)
+
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="content-wrapper">
+
+        <div class="float-left">
+            <div id="sidebar">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-logo">
+                        <img src="~/Content/Images/logo-main.png" alt="Logo" width="75" height="75" />
+                    </li>
+                    <li class="dropdown" id="dropdown-profile">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            @User.FirstName @User.LastName.First()<span class="glyphicon glyphicon-chevron-down" id="name-caret"></span>
+                        </a>
+                        <ul class="dropdown-menu navmenu-nav" role="menu">
+                            <li><a href="~/UserProfile">My Profile</a></li>
+                        </ul>
+                    </li>
+                    @Html.Partial("_NavigationLinks", User)
+                    <li></li>
+                    <li class="main-link"><a href="~/User/Logout"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span><p class="label-text">Logout</p></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="container-fluid fill">
+            <div class="row" id="header-bar">
+                <div class="col-xs-12 fill" id="header">
+                    <h2 class="title">@Page.Heading@RenderSection("title", required: false)</h2>
+                    <p id="viewSelector">@Page.Selection</p>
+                </div>
+            </div>
+
+            <div class="row" id="date-row-wrapper">
+                    @RenderSection("date", required:false)
+                    @RenderSection("modal", required: false)
+            </div>
+
+            <div class="row fill" id="content">
+                <div class="col-xs-12 main fill">
+                    <div id="body">
+                        @RenderSection("hours", required: false)
+                        @RenderSection("featured", required: false)
+                        <section class="content-wrapper main-content clear-fix">
+                            @RenderBody()
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>&copy; @DateTime.Now.Year - Project Management Web Application</p>
+                </div>
+            </div>
+        </footer>
+        @RenderSection("Scripts", required: false)
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.10.3.js"></script>
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <script src="~/Scripts/jquery-2.2.0.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jasny-bootstrap.min.js"></script>
+    <script src="~/Scripts/main-script.js"></script>
+    <script src="~/Scripts/MyActivity.js"></script>
+    <script type="text/javascript" src="http://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="http://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+    @RenderSection("ChildViewJS", false)
+</body>
+</html>

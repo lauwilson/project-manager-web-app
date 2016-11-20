@@ -1,0 +1,77 @@
+﻿@model Hemlock.Models.ProjectEntryTable
+@{
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+    Page.Heading = Model.UserName + " Activity Overview";
+}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+@section ChildViewCSS {
+    <link href="@Url.Content("~/Content/myActivity.css")" rel="stylesheet" type="text/css" />
+}
+
+@section modal{
+<div class="col-md-8" id="daterange-wrapper">
+@using (Html.BeginForm("Index", "MyActivity", FormMethod.Get, new { @id = "header-form" }))
+{
+    <form class="form-inline">
+        @Html.HiddenFor(model => model.CurrentSort)
+        @Html.HiddenFor(model => model.EmployeeID)
+        <label for="daterange-picker" id="daterange-label">Date Range: </label>
+        <div class="input-group input-daterange" id="daterange-picker">
+            @Html.EditorFor(model => model.StartDate, new
+        {
+            htmlAttributes = new { @class = "form-control date-picker", id = "daterangeStartDate", @Value = Model.startString }
+        })
+             <span class="input-group-addon">to</span>
+             @Html.EditorFor(model => model.EndDate, new
+        {
+            htmlAttributes = new { @class = "form-control date-picker", id = "daterangeEndDate", @Value = Model.endString }
+        })
+        </div>
+        <button type="button" id="submit-daterange-btn" class="btn btn-style" onclick="form.submit()">
+            Set Date Range
+        </button>
+    </form>
+}
+</div>
+<div class="col-md-4">
+    <button type="button" class="btn" data-toggle="modal" data-target="#modal-add-entry" id="btn-add-entry">
+        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Add New
+    </button> 
+</div>
+
+}
+
+
+@section hours{
+    <section class="hours">
+        <div id="hours" data-id="@Model.EmployeeID">
+            <table id="h">
+                <tr id="label">
+                    <td class="hrs">Budget <br />Hours</td>
+                    <td class="hrs">Logged<br /> Hours</td>
+                    <td class="hrs">Remaining<br /> Hours</td>
+                    <td class="hrs">@Html.ActionLink("Pending Categories", "Index", new
+                               {
+                                   getPendingCategoryEntries = true,
+                                   sortOrder = Model.CurrentSort,
+                                   pageSize = Model.PageSize,
+                                   startDate = Model.StartDate,
+                                   endDate = Model.EndDate,
+                                   employeeID = Model.EmployeeID
+                               })</td>
+                </tr>
+                <tr id="val">
+                    <td class="hrs" id="budgetHours">&nbsp;</td>
+                    <td class="hrs" id="loggedHours">&nbsp;</td>
+                    <td class="hrs" id="remainingHours">&nbsp;</td>
+                    <td class="hrs" id="remainingCategories">&nbsp;</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+}
+@Html.Raw(@ViewBag.HoursError)
+
+@Html.Partial("~/Views/MyActivity/ProjectEntryTable.cshtml")
+@Html.Partial("~/Views/MyActivity/MyActivityModal.cshtml")

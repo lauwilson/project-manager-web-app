@@ -1,0 +1,146 @@
+﻿@model Hemlock.Models.ProjectEntryTable
+@using PagedList.Mvc;
+
+
+<div id="Search">
+    @using (Html.BeginForm("Index", "MyActivity", FormMethod.Get))
+            {
+        @Html.HiddenFor(model => model.EmployeeID)
+        <p id="searchBox">
+            Search: @Html.TextBox("searchString",
+                                    Model.CurrentFilter as string, new { Value = "" })
+            <input id="searchButton" type="submit" value="Search" />
+        </p>
+    }
+</div>
+
+<table class="table table-striped table-responsive entriesTable">
+    <thead>
+        <tr>
+            <th class="txt-align-left">
+                @Html.ActionLink("ChangeListNo", "Index", new
+           {
+               sortOrder = Model.ChangeListNoSortParam,
+               currentFilter = Model.CurrentFilter,
+               pageSize = Model.PageSize,
+               startDate = Model.StartDate,
+               endDate = Model.EndDate,
+               employeeID = Model.EmployeeID,
+               getPendingCategoryEntries = Model.PendingCategories
+           })
+            </th>
+            <th class="txt-align-left">
+                @Html.ActionLink("Project", "Index", new
+           {
+               sortOrder = Model.ProjectSortParam,
+               currentFilter = Model.CurrentFilter,
+               pageSize = Model.PageSize,
+               startDate = Model.StartDate,
+               endDate = Model.EndDate,
+               employeeID = Model.EmployeeID,
+               getPendingCategoryEntries = Model.PendingCategories
+           })
+            </th>
+            <th class="txt-align-left">
+                @Html.ActionLink("Category", "Index", new
+           {
+               sortOrder = Model.CategorySortParm,
+               currentFilter = Model.CurrentFilter,
+               pageSize = Model.PageSize,
+               startDate = Model.StartDate,
+               endDate = Model.EndDate,
+               employeeID = Model.EmployeeID,
+               getPendingCategoryEntries = Model.PendingCategories
+           })
+            </th>
+            <th class="txt-align-right">
+                @Html.ActionLink("Hours", "Index", new
+           {
+               sortOrder = Model.HoursSortParm,
+               currentFilter = Model.CurrentFilter,
+               pageSize = Model.PageSize,
+               startDate = Model.StartDate,
+               endDate = Model.EndDate,
+               employeeID = Model.EmployeeID,
+               getPendingCategoryEntries = Model.PendingCategories
+           })
+            </th>
+            <th class="txt-align-left">
+                Description
+            </th>
+            <th class="txt-align-left">
+                @Html.ActionLink("Date Created", "Index", new
+           {
+               sortOrder = Model.DateSortParm,
+               currentFilter = Model.CurrentFilter,
+               pageSize = Model.PageSize,
+               startDate = Model.StartDate,
+               endDate = Model.EndDate,
+               employeeID = Model.EmployeeID,
+               getPendingCategoryEntries = Model.PendingCategories
+           })
+            </th>
+            <th class="txt-align-center">
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Entries)
+        {
+            <tr>
+                <td class="txt-align-left">
+                    @Html.DisplayFor(modelItem => item.ChangeListNo)
+                </td>
+                <td class="txt-align-left">
+                    @Html.DisplayFor(modelItem => item.Project.ProjectName)
+                </td>
+                <td class="txt-align-left">
+                    @Html.DisplayFor(modelItem => item.SREDCategory.CategoryName)
+                </td>
+                <td class="txt-align-right">
+                    @Html.DisplayFor(modelItem => item.Hours)
+                </td>
+                <td class="txt-align-left">
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td class="txt-align-left">
+                    @Html.DisplayFor(modelItem => item.DateCreated)
+                </td>
+                <td class="buttons txt-align-center">
+                    <span class="glyphicon glyphicon-pencil btn actionButton edit" data-toggle="modal" data-id="@item.ProjectEntryID" data-employeeId="@Model.EmployeeID" data-target="#editEntry"></span>
+                    <span class="glyphicon glyphicon-trash btn actionButton delete" data-toggle="modal" data-id="@item.ProjectEntryID" data-target="#deleteEntry" ></span>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="pageResults">
+    @Html.PagedListPager(Model.Entries, page => Url.Action("Index",
+            new
+            {
+                page,
+                sortOrder = Model.CurrentSort,
+                currentFilter = Model.CurrentFilter,
+                pageSize = Model.PageSize,
+                startDate = Model.StartDate,
+                endDate = Model.EndDate,
+                employeeID = Model.EmployeeID
+            }))
+</div>
+<div>
+    @using (Html.BeginForm("Index", "MyActivity", FormMethod.Get))
+            {
+        @Html.HiddenFor(model => model.EmployeeID)
+        @Html.HiddenFor(model => model.CurrentSort)
+        @Html.HiddenFor(model => model.CurrentFilter)
+        @Html.HiddenFor(model => model.StartDate)
+        @Html.HiddenFor(model => model.EndDate)
+        @Html.HiddenFor(model => model.PendingCategories)
+        <p id="pageSize">
+            Page Size: @Html.DropDownList("PageSize", Model.PageSizeSelect,
+                     new { @onchange = "this.form.submit()" })
+        </p>
+    }
+</div>

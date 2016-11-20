@@ -1,0 +1,277 @@
+﻿@model Hemlock.Models.ProjectEntryTable
+
+@using (Html.BeginForm("Add", "MyActivity", FormMethod.Post,
+                                new { projectEntry = Model.CreateProjectEntryModel, @class = "form-horizontal" }))
+{
+        @Html.HiddenFor(model => model.EmployeeID)
+        @Html.HiddenFor(model => model.StartDate)
+        @Html.HiddenFor(model => model.EndDate)
+        <div class="modal fade" id="modal-add-entry" role="dialog" data-id="@Model.EmployeeID">
+            <div class="modal-dialog" id="modal-create-entry" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h3 class="modal-title">Create New Entry</h3>
+                    </div>
+                    <div class="modal-body ">
+                        <form class="form-horizontal">
+                            <div class="form-group modal-element">
+                                <label for="modal-from-date" class="col-sm-2 modal-label">Date:</label>
+                                <div class="col-sm-10 dates">
+                                    <div class="input-group input-daterange">
+                                        @Html.EditorFor(model => model.CreateProjectEntryModel.StartDate, new
+                                   {
+                                       htmlAttributes =
+                                        new { @class = "form-control date-picker",
+                                            id = "startDate",
+                                            name = "from",
+                                            @value = DateTime.Now.ToShortDateString(),
+                                            placeholder = DateTime.Now.ToShortDateString(),
+                                            required = "required" }
+                                   })
+                                        <span class="input-group-addon">to</span>
+                                        @Html.EditorFor(model => model.CreateProjectEntryModel.EndDate, new
+                                   {
+                                       htmlAttributes =
+                                        new { @class = "form-control date-picker",
+                                            id = "endDate",
+                                            name = "to",
+                                            @value = DateTime.Now.ToShortDateString(),
+                                            placeholder = DateTime.Now.ToShortDateString(),
+                                            required = "required" }
+                                   })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group modal-element" id="recurrenceInstruction">
+                                <label class="col-sm-12 modal-label">If recurrence is not selected, hours will be split between days in the range.</label>
+                            </div>
+                            <div class="form-group modal-element" id="optionalRecurrence">
+                                <label class="col-sm-4 modal-label">Recurrence(optional):</label>
+                                <div class="col-sm-8" id="recurrence-row">
+                                    <div>
+                                        <label class="checkbox-inline">
+                                            @Html.CheckBoxFor(model => model.CreateProjectEntryModel.Recurrence,
+                                                new { id = "recurrenceCheckbox" })
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group modal-element" id="RecurrenceDays">
+                                <label class="col-sm-3 modal-label" id="recurringDaysLabel">Recurring Days:</label>
+                                <div class="col-sm-9" id="recurrence-row">
+                                    <div>
+                                        <label class="checkbox-inline">
+                                            @Html.CheckBoxFor(model => model.CreateProjectEntryModel.RepeatMonday,
+                                                new { htmlAttributes = new { id = "repeat-monday" } })
+                                            M
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            @Html.CheckBoxFor(model => model.CreateProjectEntryModel.RepeatTuesday,
+                                                new { htmlAttributes = new { id = "repeat-tuesday" } })
+                                            T
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            @Html.CheckBoxFor(model => model.CreateProjectEntryModel.RepeatWednesday,
+                                                new { htmlAttributes = new { id = "repeat-wednesday" } })
+                                            W
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            @Html.CheckBoxFor(model => model.CreateProjectEntryModel.RepeatThursday,
+                                                new { htmlAttributes = new { id = "repeat-thursday" } })
+                                            Th
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            @Html.CheckBoxFor(model => model.CreateProjectEntryModel.RepeatFriday,
+                                                new { htmlAttributes = new { id = "repeat-friday" } })
+                                            F
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group modal-element">
+                                <label for="modal-select-project" class="col-sm-2 modal-label">Project:</label>
+                                <div class="col-sm-10">
+                                    @Html.DropDownListFor(model => model.CreateProjectEntryModel.SelectProject,
+                                        Model.ProjectNames, string.Empty, new
+                                        {
+                                            @class = "form-control",
+                                            id = "projects",
+                                            required = "required"
+                                        })
+                                </div>
+                            </div>
+                            <div class="form-group modal-element">
+                                <label for="modal-select-category" class="col-sm-2 modal-label">Category:</label>
+                                <div class="col-sm-10">
+                                    @Html.DropDownListFor(model => model.CreateProjectEntryModel.SelectCategory,
+                                        Model.CategoryNames, string.Empty, new
+                                        {
+                                            @class = "form-control categories",
+                                            required = "required"
+                                        })
+                                </div>
+                            </div>
+                            <div class="form-group modal-element">
+                                <label for="modal-entry-description" class="col-sm-2 modal-label">Description:</label>
+                                <div class="col-sm-10">
+                                    @Html.EditorFor(model => model.CreateProjectEntryModel.Description, new
+                               {
+                                   htmlAttributes =
+                                        new { @class = "form-control", id = "modal-entry-description", rows = 3 }
+                               })
+                                </div>
+                            </div>
+                            <div class="form-group modal-element">
+                                <label for="modal-entry-hours" class="col-sm-2 modal-label">Hours:</label>
+                                <div class="col-sm-2">
+                                    @Html.EditorFor(model => model.CreateProjectEntryModel.EntryHours, new
+                               {
+                                   htmlAttributes =
+                                        new { @class = "form-control",
+                                            id = "modal-entry-hours",
+                                            min = 1,
+                                            @Value = 1,
+                                            onclick = "this.focus();this.select()" }
+                               })
+                                </div>
+
+                            </div>
+                            <span class="RemainingHoursText">Remaining hours for date range selected: <span class="remainingHours"></span></span>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-default">Reset</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success submitForm">Create Entry</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+}
+
+@using (Html.BeginForm("Edit", "MyActivity", FormMethod.Post, new { id = Model, @class = "form-horizontal" }))
+{
+@Html.HiddenFor(model => model.EmployeeID)
+@Html.HiddenFor(model => model.StartDate)
+@Html.HiddenFor(model => model.EndDate)
+@Html.HiddenFor(model => model.CurrentSort)
+@Html.HiddenFor(model => model.CurrentFilter)
+@Html.HiddenFor(model => model.PendingCategories)
+<div class="modal fade" id="editEntry" data-id="@Model.EmployeeID">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Entry</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group modal-element">
+                        @Html.HiddenFor(model => model.UpdatedProjectEntryModel.ProjectEntryID, new { id = "hiddenEditID" })
+                        <label for="modal-from-date" class="col-sm-2 modal-label">Date:</label>
+                        <div class="col-sm-10 dates">
+                            <div class="input-group input-daterange">
+                                @Html.EditorFor(model => model.UpdatedProjectEntryModel.Date, new
+                                   {
+                                       htmlAttributes =
+                                        new { @class = "form-control date-picker", id = "editDate", name = "from" }
+                                   })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group modal-element">
+                        <label for="modal-select-project" class="col-sm-2 modal-label">Project:</label>
+                        <div class="col-sm-10">
+                            @Html.DropDownListFor(model => model.UpdatedProjectEntryModel.ProjectID,
+                                                        Model.ProjectNames, string.Empty, new
+                                                        {
+                                                            @class = "form-control",
+                                                            required = "required",
+                                                            id = "projects2"
+                                                        })
+                        </div>
+                    </div>
+                    <div class="form-group modal-element">
+                        <label for="modal-select-category" class="col-sm-2 modal-label">Category:</label>
+                        <div class="col-sm-10">
+                            @Html.DropDownListFor(model => model.UpdatedProjectEntryModel.SREDCategoryID,
+                                                        Model.CategoryNames, string.Empty, new
+                                                        {
+                                                            @class = "form-control categories",
+                                                            required = "required",
+                                                            id = "categories2"
+                                                        })
+                        </div>
+                    </div>
+                    <div class="form-group modal-element">
+                        <label for="modal-entry-description" class="col-sm-2 modal-label">Description:</label>
+                        <div class="col-sm-10">
+                            @Html.EditorFor(model => model.UpdatedProjectEntryModel.Description, new
+                           {
+                               htmlAttributes = new
+                               {
+                                   @class = "form-control",
+                                   id = "editDescription",
+                                   rows = 3,
+                                   onclick = "this.focus();this.select()"
+                               }
+                           })
+                        </div>
+                    </div>
+                    <div class="form-group modal-element">
+                        <label for="modal-entry-hours" class="col-sm-2 modal-label">Hours:</label>
+                        <div class="col-sm-2">
+                            @Html.EditorFor(model => model.UpdatedProjectEntryModel.Hours, new
+                           {
+                               htmlAttributes = new
+                               {
+                                   @class = "form-control",
+                                   id = "editHours",
+                                   min = 1,
+                                   onclick = "this.focus();this.select()"
+                               }
+                           })
+                        </div>
+                    </div>
+                    <span class="RemainingHoursText">Remaining hours for week of date selected: <span class="remainingHours"></span></span><br />
+                    <span class="RemainingHoursText">Max hours that can be allocated to this entry: <span class="maxHoursLeft"></span></span>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-success">Update Entry</button>
+            </div>
+        </div>
+    </div>
+</div>
+    }
+
+@using (Html.BeginForm("Delete", "MyActivity", FormMethod.Post, new { id = Model.DeleteEntryId, @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(model => model.EmployeeID)
+    @Html.HiddenFor(model => model.StartDate)
+    @Html.HiddenFor(model => model.EndDate)
+    @Html.HiddenFor(model => model.CurrentSort)
+    @Html.HiddenFor(model => model.CurrentFilter)
+    <div class="modal fade" id="deleteEntry">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Delete Entry</h3>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        @Html.HiddenFor(model => model.DeleteEntryId, new { @class = "deleteID" });
+                        <h4>Are you sure you want to delete the selected entry?</h4>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Delete Entry</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

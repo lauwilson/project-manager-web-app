@@ -1,0 +1,80 @@
+﻿#searchBox {
+    float:right; 
+    font-weight: bold;
+}
+
+#pageSize {
+    font-weight: bold;
+    margin-left: auto;
+    margin-right: auto;
+    width: 98%;
+}
+
+#Search {
+    width:90%;
+    margin:auto;
+    margin-top:20px;
+}
+
+#searchButton {
+    background-color:#da3610; 
+    color: white; 
+    border: none; 
+    border-radius: 5px; 
+    padding: 5px; 
+    box-shadow: 3px 3px 7px #888888;
+}
+
+.pageResults {
+    width: 98%; 
+    margin-left: auto; 
+    margin-right: auto;
+}
+
+#editDate {
+    width: 50% !important;
+    max-width: 100% !important;
+}
+
+#editDescription {
+    resize: none;
+}
+
+.RemainingHoursText {
+    color: #39B7CD;
+    display: inline;
+}
+
+.remainingHours, .maxHoursLeft {
+    color: #39B7CD;
+    font-weight: bold;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
+}
+
+#RecurrenceDays {
+    margin-top: 0 !important;
+}
+
+#optionalRecurrence {
+    margin-bottom: 0 !important;
+}
+
+#dateRangeText {
+    float: left;
+    margin-left: 1%;
+    margin-top: 1.9%;
+}
+
+#recurrenceInstruction {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}

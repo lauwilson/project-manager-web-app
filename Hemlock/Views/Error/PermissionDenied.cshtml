@@ -1,0 +1,44 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/Error.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+</body>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>You Shall Not Pass!</title>
+    <link href="~/Content/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/Error.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>403 : Permission Denied</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <p></p>
+                <img src="~/Content/Images/403.png" alt="You Shall Not Pass!" />
+                <div class="text-center">
+                    @Html.ActionLink("Back to previous page", null, null, null,
+                        new { @href="javascript:void(0);",
+                            @onclick="history.go(-1);",
+                            @class="btn btn-danger",
+                            @id="btn-go-back"})
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</body>
+</html>

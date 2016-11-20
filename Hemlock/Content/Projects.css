@@ -1,0 +1,99 @@
+﻿body {
+}
+#title {
+    background-color: #da3610;
+    color: #ffffff;
+    font-weight: bold;
+    width:250px;
+    text-align:left;
+    font-size:42px;
+}
+
+ul#choose{
+    z-index:1000;
+}
+
+.sred-category-row {
+    background-color: #f9f9f9
+}
+
+.sred-category-employee {
+    background-color: #ffffff;
+}
+
+#testerRow {
+    background-color : blue;
+}
+
+#projects-sidebar {
+    background-color: #565656;
+    position: absolute;
+    z-index: 0;
+    width: 180px;
+    margin-left: -15px;
+    height: 0;
+}
+
+#project-header {
+    white-space: nowrap;
+    font-weight: normal;
+}
+
+#projects-list {
+    list-style : none;
+    top : 0;
+    margin : 0;
+    padding : 0;
+    width : 100%;
+    text-align : center;
+    overflow-x: hidden;
+    height: 0;
+}
+
+.projects-content {
+    padding-left : 15px;
+    padding-right : 15px;
+}
+
+#projects-sidebar li {
+    line-height : 50px;
+    font-size: 17px;
+    color: rgba(255,255,255,0.54);
+}
+
+#projects-list-title {
+    position: relative;
+    left: 10px;
+}
+#btn-add-project {
+    float: right;
+}
+
+#btn-add-category {
+    margin: 0 0 10px 0;
+}
+
+#btn-add-project:hover {
+    color: rgba(255,255,255,1);
+}
+
+#projects-sidebar li a {
+    display: block;
+    text-decoration : none;
+    color: rgba(255,255,255,0.54);
+}
+
+#selected-project {
+    color: rgba(255,255,255,1);
+    background-color: #3e3e3e;
+}
+
+#projects-sidebar li a:hover {
+    text-decoration:none;
+    color: rgba(255,255,255,1);
+}
+
+#project-caret {
+    font-size: 12px;
+    top: -5px;
+}

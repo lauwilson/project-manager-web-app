@@ -1,0 +1,13 @@
+﻿@using Hemlock.Models.Enum
+
+@model Hemlock.Models.Employee
+
+@if ((Model.Permissions & (int) PermissionsEnum.CanViewOwnActivity) == (int)PermissionsEnum.CanViewOwnActivity)
+{
+    <li class="main-link"><a href="~/MyActivity"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span><p class="label-text">My Activity</p></a></li>
+}
+@if ((Model.Permissions & (int)PermissionsEnum.Admin) == (int)PermissionsEnum.Admin)
+{
+    <li class="main-link"><a href="~/Projects"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span><p class="label-text">Projects</p></a></li>
+    <li class="main-link"><a href="~/Staff"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><p class="label-text">Staff</p></a></li>
+}

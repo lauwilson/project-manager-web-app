@@ -1,0 +1,99 @@
+﻿@using Hemlock.Models
+@{
+    Page.Title = "User Profile";
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+    Page.Heading = "User Profile";
+}
+
+@model EditEmployeeViewModel
+
+@using (Html.BeginForm("Edit", "Employee", FormMethod.Post,
+    new { employeeViewModel = Model, @class = "form-horizontal" }))
+{
+<form class="form" id="user-profile-details">
+    <div class="row">
+        <div class="col-xs-4">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <label for="user-first-name">First Name:</label>
+                        @Html.EditorFor(Model => Model.Employee.FirstName,
+      new { htmlAttributes = new { @class = "form-control", id = "edit-employee-fname" } })
+                </div> 
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <label for="user-last-name">Last Name:</label>
+                    @Html.EditorFor(Model => Model.Employee.LastName,
+                  new { htmlAttributes = new { @class = "form-control", id = "edit-employee-lname" } })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <label for="user-email">Email:</label>
+                    @Html.TextBoxFor(Model => Model.Employee.Email,
+                  new { @class = "form-control", id = "edit-employee-email", type = "email" })
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-xs-4">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <label for="user-position">Position:</label>
+                    @Html.DropDownListFor(Model => Model.Employee.positionID,
+                        Model.ListOfPositions, string.Empty, new
+                        {
+                            @class = "form-control",
+                            required = "required",
+                            id = "edit-employee-position"
+                        })
+                </div>
+            </div>
+        </div>
+        </div>
+    <div class="row">
+        <div class="col-xs-4">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <label for="edit-employee-start-date">Start Date:</label>
+                    @Html.TextBoxFor(Model => Model.Employee.StartDate,
+                   new { @class = "form-control", id = "edit-employee-start-date", type = "text" })
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <label for="edit-employee-end-date">End Date:</label>
+                    @Html.TextBoxFor(Model => Model.Employee.EndDate, 
+                   new { @class = "form-control", id = "edit-employee-end-date", type = "text" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="editButtons">
+        <div class="col-xs-4">
+            <label for="AdminCheckBox">Has Admin Privileges:</label>
+            @Html.CheckBoxFor(Model => Model.HasAdminPrivileges, new { name = "AdminCheckBox"} )
+        </div>
+        <div class="col-sm-4 txt-align-right">
+            @Html.ActionLink("Back to previous page", null, null, null,
+          new
+          {
+              @href = "javascript:void(0);",
+              @onclick = "history.go(-1);",
+              @class = "btn btn-danger",
+              @id = "btn-go-back"
+          })
+            @Html.HiddenFor(Model => Model.Employee.EmployeeID, new { @Value = Model.Employee.EmployeeID, id="edit-employee-id"})
+            <button class="btn btn-primary" type="submit" id="btn-update-profile">Update Profile</button>
+        </div>
+    </div>
+</form>
+}

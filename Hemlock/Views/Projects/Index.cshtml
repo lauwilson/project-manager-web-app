@@ -1,0 +1,102 @@
+﻿@model Hemlock.Models.ProjectsViewModel
+@using Hemlock.Models;
+@{
+    ViewBag.Title = "Projects";
+    Layout = "~/Views/Shared/_SiteLayout.cshtml";
+    Page.Title = "Projects";
+}
+
+@section ChildViewCSS {
+    <link href="~/Content/Projects.css" rel="stylesheet" type="text/css" />
+}
+
+@section ChildViewJS {
+    <script src="~/Scripts/Projects.js"></script>
+}
+@section title{
+    <div id="title">
+        <ul class="nav">
+            <li class="dropdown">
+                <a class="dropdown-toggle" role="button" data-toggle="dropdown" data-target="#" href="#" id="project-header">@Model.SelectedProject.ProjectName
+                        <span class="glyphicon glyphicon-chevron-down" id="project-caret"></span>
+               </a>
+                <ul id="choose" class="dropdown-menu" role="menu" aria-labelledby="drop5">
+                    @foreach (var p in Model.Projects)
+                    {
+                        if (p == Model.SelectedProject)
+                        {
+                            <li>
+                                @Html.ActionLink(@p.ProjectName, "Index", "Projects",
+                                    new { projectName = @p.ProjectName }, new { id = "selected-project" })
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                @Html.ActionLink(@p.ProjectName, "Index", "Projects",
+                                    new { projectName = @p.ProjectName }, null)
+                            </li>
+                        }
+                    }
+                </ul>
+            </li>
+        </ul>
+    </div>
+}
+@section modal{
+<div class="col-md-8" id="daterange-wrapper">
+    @using (Html.BeginForm("Index", "Projects", new { projectName = Model.SelectedProject.ProjectName }, FormMethod.Post, new
+    {
+        id = "header-form"}))
+    {
+    <label for="daterange-picker" id="daterange-label">Date Range: </label>
+    <div class="input-group input-daterange" id="daterange-picker">
+        <input class="form-control date-picker" id="daterangeStartDate" name="fromDate" value="@Model.FromDateString" />
+        <span class="input-group-addon">to</span>
+        <input class="form-control date-picker" id="daterangeEndDate" name="toDate" value="@Model.ToDateString" />
+    </div>
+    <button type="button" id="submit-daterange-btn" class="btn btn-style" onclick="form.submit()">
+        Set Date Range
+    </button>
+    }
+</div>
+<div class="col-md-4">
+    <button type="button" class="btn btn-style" id="btn-add-project">
+        Add Project
+    </button> 
+</div>
+}
+@section date{
+}
+<div>
+    <div class="row projects-content">
+        <div class="col-xs-12">
+            <section class="hours">
+                <div id="hours">
+                    <table id="h">
+                        <tr id="label">
+                            <td class="hrs">Logged<br /> Hours</td>
+                        </tr>
+                        <tr id="val">
+                            <td class="hrs">@Model.TotalLoggedHours</td>
+                        </tr>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="row projects-content" id="add-category-row">
+        <div class="col-xs-12">
+            <button type="button" class="btn btn-style" data-toggle="modal" data-target="#modal-add-category" id="btn-add-category">
+                Add Category
+            </button>
+        </div>
+    </div>
+    <div class="row projects-content">
+        <div class="col-xs-12">
+            @Html.Partial("~/Views/Projects/ProjectsTable.cshtml")
+            @Html.Partial("~/Views/Projects/ProjectsModals.cshtml")
+        </div>
+    </div>
+</div>
+
