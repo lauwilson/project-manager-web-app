@@ -11,6 +11,26 @@ Users of the tool will be able to log what contributions were made during the we
 Administrators will be able to see what the weekly, monthly, or total contributions were made by each employee. In addtion, they will be able
 to identify which users have not logged enough hours for the 40 hour work week.
 
+Example Workflows
+-----------------
+####Adding a New Project####
+![Add Project](../master/readme_files/AddProject.gif?raw=true "Add Project")
+
+####Adding a Work Category to Project####
+![Add Category](../master/readme_files/AddCategory.gif?raw=true "Add Category")
+
+####Editing a Category Name####
+![Edit Category](../master/readme_files/EditCategory.gif?raw=true "Edit Category")
+
+####Adding a New Employee####
+![Add Employee](../master/readme_files/AddEmployee.gif?raw=true "Add Employee")
+
+####Editing Employee Details####
+![Edit Employee](../master/readme_files/EditEmployee.gif?raw=true "Edit Employee")
+
+####Viewing Employee Contributions####
+![View Employee](../master/readme_files/ViewEmployee.gif?raw=true "View Employee")
+
 Setting Up Your Server and Database for Migrations
 --------------------------------------------------
 The project's Web.Config contains the connection string for the database you will point towards.
